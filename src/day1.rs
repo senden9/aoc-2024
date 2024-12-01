@@ -1,8 +1,8 @@
 use aoc_runner_derive::{aoc, aoc_generator};
 use std::collections::HashMap;
 
-#[aoc_generator(day1)]
-fn input_generator(input: &str) -> (Vec<u32>, Vec<u32>) {
+#[aoc_generator(day1, part1)]
+fn input_generator_p1(input: &str) -> (Vec<u32>, Vec<u32>) {
     let nr_lines = input.lines().count();
     let mut numbers1 = Vec::<u32>::with_capacity(nr_lines);
     let mut numbers2 = Vec::<u32>::with_capacity(nr_lines);
@@ -29,18 +29,26 @@ fn solve_part1(input: &(Vec<u32>, Vec<u32>)) -> u32 {
     total
 }
 
-fn hist(inp: &[u32]) -> HashMap<u32, u32> {
-    let hm = HashMap::<u32, u32>::with_capacity(inp.len());
-    inp.iter().fold(hm, |mut acc, x| {
-        acc.entry(*x).and_modify(|v| *v += 1).or_insert(1);
-        acc
-    })
+#[aoc_generator(day1, part2)]
+fn input_generator_p2(input: &str) -> (HashMap<u32, u32>, HashMap<u32, u32>) {
+    let nr_lines = input.lines().count();
+    let mut numbers1 = HashMap::<u32, u32>::with_capacity(nr_lines);
+    let mut numbers2 = HashMap::<u32, u32>::with_capacity(nr_lines);
+
+    for line in input.lines() {
+        let line_iter = line.split_once("   ").unwrap();
+        let n1 = line_iter.0.parse::<u32>().unwrap();
+        numbers1.entry(n1).and_modify(|v| *v += 1).or_insert(1);
+        let n2 = line_iter.1.parse::<u32>().unwrap();
+        numbers2.entry(n2).and_modify(|v| *v += 1).or_insert(1);
+    }
+    (numbers1, numbers2)
 }
 
 #[aoc(day1, part2)]
-fn solve_part2(input: &(Vec<u32>, Vec<u32>)) -> u32 {
-    let numbers1 = hist(&input.0);
-    let numbers2 = hist(&input.1);
+fn solve_part2(input: &(HashMap<u32, u32>, HashMap<u32, u32>)) -> u32 {
+    let numbers1 = &input.0;
+    let numbers2 = &input.1;
     let mut total = 0;
     for (nr, cnt) in numbers1 {
         total += nr * numbers2.get(&nr).unwrap_or(&0) * cnt;
@@ -50,11 +58,11 @@ fn solve_part2(input: &(Vec<u32>, Vec<u32>)) -> u32 {
 
 // Public exposed functions that map the input string directly to the result
 pub fn part1(input: &str) -> u32 {
-    solve_part1(&input_generator(input))
+    solve_part1(&input_generator_p1(input))
 }
 
 pub fn part2(input: &str) -> u32 {
-    solve_part2(&input_generator(input))
+    solve_part2(&input_generator_p2(input))
 }
 
 #[cfg(test)]
@@ -71,13 +79,13 @@ mod tests {
 
     #[test]
     fn part1_example() {
-        let input_parsed = input_generator(EXAMPLE_INPUT);
+        let input_parsed = input_generator_p1(EXAMPLE_INPUT);
         assert_eq!(solve_part1(&input_parsed), 11);
     }
 
     #[test]
     fn part2_example() {
-        let input_parsed = input_generator(EXAMPLE_INPUT);
+        let input_parsed = input_generator_p2(EXAMPLE_INPUT);
         assert_eq!(solve_part2(&input_parsed), 31);
     }
 
@@ -91,14 +99,14 @@ mod tests {
     #[test]
     fn part1_input() {
         let input = read_input("input/2024/day1.txt");
-        let s = input_generator(&input);
+        let s = input_generator_p1(&input);
         assert_eq!(solve_part1(&s), 2769675);
     }
 
     #[test]
     fn part2_input() {
         let input = read_input("input/2024/day1.txt");
-        let s = input_generator(&input);
+        let s = input_generator_p2(&input);
         assert_eq!(solve_part2(&s), 24643097);
     }
 }
