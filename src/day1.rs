@@ -16,7 +16,7 @@ pub fn input_generator(input: &str) -> (Vec<u32>, Vec<u32>) {
 }
 
 #[aoc(day1, part1)]
-pub fn solve_part1(input: &(Vec<u32>, Vec<u32>)) -> u32 {
+pub fn part1(input: &(Vec<u32>, Vec<u32>)) -> u32 {
     let mut numbers1 = input.0.clone();
     let mut numbers2 = input.1.clone();
     assert_eq!(numbers1.len(), numbers1.len());
@@ -38,7 +38,7 @@ fn hist(inp: &[u32]) -> HashMap<u32, u32> {
 }
 
 #[aoc(day1, part2)]
-pub fn solve_part2(input: &(Vec<u32>, Vec<u32>)) -> u32 {
+pub fn part2(input: &(Vec<u32>, Vec<u32>)) -> u32 {
     let numbers1 = hist(&input.0);
     let numbers2 = hist(&input.1);
     let mut total = 0;
@@ -61,7 +61,7 @@ mod tests {
 3   9
 3   3";
         let input_parsed = input_generator(ex_input);
-        assert_eq!(solve_part1(&input_parsed), 11);
+        assert_eq!(part1(&input_parsed), 11);
     }
 
     #[test]
@@ -73,6 +73,6 @@ mod tests {
 3   9
 3   3";
         let input_parsed = input_generator(ex_input);
-        assert_eq!(solve_part2(&input_parsed), 31);
+        assert_eq!(part2(&input_parsed), 31);
     }
 }
