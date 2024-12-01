@@ -2,7 +2,7 @@ use aoc_runner_derive::{aoc, aoc_generator};
 use std::collections::HashMap;
 
 #[aoc_generator(day1)]
-pub fn input_generator(input: &str) -> (Vec<u32>, Vec<u32>) {
+fn input_generator(input: &str) -> (Vec<u32>, Vec<u32>) {
     let nr_lines = input.lines().count();
     let mut numbers1 = Vec::<u32>::with_capacity(nr_lines);
     let mut numbers2 = Vec::<u32>::with_capacity(nr_lines);
@@ -16,7 +16,7 @@ pub fn input_generator(input: &str) -> (Vec<u32>, Vec<u32>) {
 }
 
 #[aoc(day1, part1)]
-pub fn part1(input: &(Vec<u32>, Vec<u32>)) -> u32 {
+fn solve_part1(input: &(Vec<u32>, Vec<u32>)) -> u32 {
     let mut numbers1 = input.0.clone();
     let mut numbers2 = input.1.clone();
     assert_eq!(numbers1.len(), numbers1.len());
@@ -38,7 +38,7 @@ fn hist(inp: &[u32]) -> HashMap<u32, u32> {
 }
 
 #[aoc(day1, part2)]
-pub fn part2(input: &(Vec<u32>, Vec<u32>)) -> u32 {
+fn solve_part2(input: &(Vec<u32>, Vec<u32>)) -> u32 {
     let numbers1 = hist(&input.0);
     let numbers2 = hist(&input.1);
     let mut total = 0;
@@ -46,6 +46,15 @@ pub fn part2(input: &(Vec<u32>, Vec<u32>)) -> u32 {
         total += nr * numbers2.get(&nr).unwrap_or(&0) * cnt;
     }
     total
+}
+
+// Public exposed functions that map the input string directly to the result
+pub fn part1(input: &str) -> u32 {
+    solve_part1(&input_generator(input))
+}
+
+pub fn part2(input: &str) -> u32 {
+    solve_part2(&input_generator(input))
 }
 
 #[cfg(test)]
@@ -63,13 +72,13 @@ mod tests {
     #[test]
     fn part1_example() {
         let input_parsed = input_generator(EXAMPLE_INPUT);
-        assert_eq!(part1(&input_parsed), 11);
+        assert_eq!(solve_part1(&input_parsed), 11);
     }
 
     #[test]
     fn part2_example() {
         let input_parsed = input_generator(EXAMPLE_INPUT);
-        assert_eq!(part2(&input_parsed), 31);
+        assert_eq!(solve_part2(&input_parsed), 31);
     }
 
     fn read_input(file_name: &str) -> String {
@@ -83,13 +92,13 @@ mod tests {
     fn part1_input() {
         let input = read_input("input/2024/day1.txt");
         let s = input_generator(&input);
-        assert_eq!(part1(&s), 2769675);
+        assert_eq!(solve_part1(&s), 2769675);
     }
 
     #[test]
     fn part2_input() {
         let input = read_input("input/2024/day1.txt");
         let s = input_generator(&input);
-        assert_eq!(part2(&s), 24643097);
+        assert_eq!(solve_part2(&s), 24643097);
     }
 }
