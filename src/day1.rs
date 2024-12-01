@@ -1,5 +1,5 @@
-use std::collections::HashMap;
 use aoc_runner_derive::{aoc, aoc_generator};
+use std::collections::HashMap;
 
 #[aoc_generator(day1)]
 pub fn input_generator(input: &str) -> (Vec<u32>, Vec<u32>) {
